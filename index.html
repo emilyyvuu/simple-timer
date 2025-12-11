@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Timers</h1>
+    <button id="add-timer-btn">New Timer</button>
+  </header>
+  <section id="timer-list-view">
+    <!-- List of timers -->
+  </section>
+  <section id="single-timer-view" class="hidden">
+    <button id="back-btn">Back</button>
+    <div id="single-timer-content">
+      <!-- Single timer -->
+    </div>
+  </section>
+  <div id="timer-form-container" class="hidden">
+    <form id="timer-form" action="/submit" method="post">
+      <label for="timer-name">Timer Name:</label>
+      <input type="text" id="timer-name" name="timer-name" required>
+      <label for="timer-hours">Hours</label>
+      <input type="number" id="hours" name="" required>
+      <label for="timer-minutes">Minutes</label>
+      <input type="number" id="minutes" name="timer-minutes" required>
+      <label for="timer-seconds">Seconds</label>
+      <input type="number" id="seconds" name="timer-seconds" required>
+      <button type="submit">Create Timer</button>
+      <button type="button" id="cancel-timer-btn">Cancel</button>
+    </form>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+header {
+  display:flex;
+  justify-content: space-between;
+}
+
+h1 {
+  color: rgb(65, 65, 177);
+}
+
+button {
+  background-color: rgb(184, 197, 218);
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none;
+}
