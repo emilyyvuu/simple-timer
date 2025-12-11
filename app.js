@@ -7,8 +7,28 @@ const backButton = document.getElementById('back-btn');
 const singleTimerContent = document.getElementById('single-timer-content');
 
 let timers = [];
+const STORAGE_KEY = 'multi-timer-app';
 let viewMode = "list";
 let selectedTimerId = null;
+
+/* Load timers from localStorage */
+function loadTimers() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    try {
+        const data = JSON.parse(raw);
+        return Array.isArray(data) ? data : [];
+    } catch (e) {
+        console.error('Failed to parse timers from storage', e);
+        return [];
+    }
+}
+
+function saveTimers() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(timers));
+}
+
+timers = loadTimers();
 
 /* Handles switching to form view to add a new timer */
 addTimerButton.addEventListener('click', () => {
@@ -34,6 +54,7 @@ form.addEventListener('submit', (e) => {
     };
 
     timers.push(newTimer);
+    saveTimers();
     form.reset();
     formContainer.classList.add('hidden');
     render();
@@ -79,6 +100,7 @@ function createTimerElement(timer, options = {}) {
     playPauseButton.textContent = timer.isRunning ? 'Pause' : 'Start';
     playPauseButton.addEventListener('click', () => {
         timer.isRunning = !timer.isRunning;
+        saveTimers();
         render();
     });
 
@@ -86,12 +108,14 @@ function createTimerElement(timer, options = {}) {
     resetButton.addEventListener('click', () => {
         timer.remaining = timer.duration;
         timer.isRunning = false;
+        saveTimers();
         render();
     });
 
     deleteButton.textContent = 'Delete';
     deleteButton.addEventListener('click', () => {
         timers = timers.filter(t => t.id !== timer.id);
+        saveTimers();
         if (onDelete) onDelete(); 
         render();
     });
