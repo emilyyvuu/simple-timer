@@ -1,14 +1,29 @@
-# ⏱️ Simple Timer
+# ⏱️ Multi-Timer Web App
 
-A beginner-friendly web app that lets you set a custom duration and watch the countdown in real time.  
+A simple, lightweight timer application.
+
 Built with **HTML**, **CSS**, and **JavaScript**.
 
-## Features
-- Set minutes and seconds
-- Start, pause, and reset the timer
-- Stops cleanly at `00:00`
+---
 
-## Getting Started
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/emilyyvuu/simple-timer.git
+## ⭐ Features
+
+### 🔹 Multiple Timers  
+- Create as many timers as you want  
+- Each timer has a name and supports **hours, minutes, seconds**
+
+### 🔹 Timer Controls  
+Each timer includes:
+- **Start / Pause**
+- **Reset**
+- **Delete**
+- **Zoom** (view one timer at a time)
+
+### 🔹 Zoom View  
+Focus on a single timer:
+- Large display  
+- Full controls still available  
+- “Back” button returns to the full timer list  
+
+### 🔹 LocalStorage Persistence  
+All timers are saved automatically. 
