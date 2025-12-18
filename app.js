@@ -91,49 +91,110 @@ function createTimerElement(timer, options = {}) {
     const { showZoom = false, onZoom, onDelete } = options;
 
     const timerElement = document.createElement('div');
-    const playPauseButton = document.createElement('button');
-    const resetButton = document.createElement('button');
-    const deleteButton = document.createElement('button');
+    timerElement.className = 'timer-card';
 
-    timerElement.textContent = `${timer.name} - ${formatTime(timer.remaining)}`;
+    const topActions = document.createElement('div');
+    topActions.className = 'timer-top-actions';
 
-    playPauseButton.textContent = timer.isRunning ? 'Pause' : 'Start';
-    playPauseButton.addEventListener('click', () => {
-        timer.isRunning = !timer.isRunning;
-        saveTimers();
-        render();
-    });
+    const info = document.createElement('div');
+    info.className = 'timer-info';
 
-    resetButton.textContent = 'Reset';
-    resetButton.addEventListener('click', () => {
-        timer.remaining = timer.duration;
-        timer.isRunning = false;
-        saveTimers();
-        render();
-    });
+    const title = document.createElement('h2');
+    title.className = 'timer-name';
+    title.textContent = timer.name;
 
-    deleteButton.textContent = 'Delete';
-    deleteButton.addEventListener('click', () => {
-        timers = timers.filter(t => t.id !== timer.id);
-        saveTimers();
-        if (onDelete) onDelete(); 
-        render();
-    });
+    const remaining = document.createElement('p');
+    remaining.className = 'timer-remaining';
+    remaining.textContent = formatTime(timer.remaining);
 
-    timerElement.appendChild(playPauseButton);
-    timerElement.appendChild(resetButton);
-    timerElement.appendChild(deleteButton);
+    info.appendChild(title);
+    info.appendChild(remaining);
 
-    // Optional Zoom button (for list view)
-    if (showZoom && onZoom) {
-        const zoomButton = document.createElement('button');
-        zoomButton.textContent = 'Zoom';
-        zoomButton.addEventListener('click', () => {
-            onZoom();
-            render();
-        });
-        timerElement.appendChild(zoomButton);
+    const bottomActions = document.createElement('div');
+    bottomActions.className = 'timer-bottom-actions';
+
+    function createIconButton({ label, iconSrc, className, onClick }) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = className ? `icon-button ${className}` : 'icon-button';
+        button.setAttribute('aria-label', label);
+        button.addEventListener('click', onClick);
+
+        if (iconSrc) {
+            const icon = document.createElement('img');
+            icon.src = iconSrc;
+            icon.alt = '';
+            icon.setAttribute('aria-hidden', 'true');
+            icon.loading = 'lazy';
+            icon.addEventListener('error', () => {
+                icon.remove();
+            });
+            button.appendChild(icon);
+        }
+
+        return button;
     }
+
+    const playPauseButton = createIconButton({
+        label: timer.isRunning ? 'Pause timer' : 'Start timer',
+        iconSrc: timer.isRunning ? 'icons/pause-button.png' : 'icons/play.png',
+        className: 'play-pause-btn',
+        onClick: () => {
+            timer.isRunning = !timer.isRunning;
+            saveTimers();
+            render();
+        }
+    });
+
+    const resetButton = createIconButton({
+        label: 'Reset timer',
+        iconSrc: 'icons/reset.png',
+        className: 'reset-btn',
+        onClick: () => {
+            timer.remaining = timer.duration;
+            timer.isRunning = false;
+            saveTimers();
+            render();
+        }
+    });
+
+    const deleteButton = createIconButton({
+        label: 'Delete timer',
+        iconSrc: 'icons/delete.png',
+        className: 'delete-btn',
+        onClick: () => {
+            timers = timers.filter(t => t.id !== timer.id);
+            saveTimers();
+            if (onDelete) onDelete();
+            render();
+        }
+    });
+
+    topActions.appendChild(deleteButton);
+
+    if (showZoom && onZoom) {
+        const zoomButton = createIconButton({
+            label: 'Open single timer view',
+            iconSrc: 'icons/fullscreen.png',
+            className: 'zoom-btn',
+            onClick: () => {
+                onZoom();
+                render();
+            }
+        });
+        topActions.appendChild(zoomButton);
+    } else {
+        const spacer = document.createElement('span');
+        spacer.className = 'top-action-spacer';
+        topActions.appendChild(spacer);
+    }
+
+    bottomActions.appendChild(playPauseButton);
+    bottomActions.appendChild(resetButton);
+
+    timerElement.appendChild(topActions);
+    timerElement.appendChild(info);
+    timerElement.appendChild(bottomActions);
 
     return timerElement;
 }
