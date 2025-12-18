@@ -4,6 +4,14 @@ body {
   margin: 1.25rem 2rem;
 }
 
+body.single-view-active {
+  overflow: hidden;
+}
+
+body.form-open {
+  overflow: hidden;
+}
+
 header {
   display:flex;
   justify-content: space-between;
@@ -43,6 +51,135 @@ button img {
   display: none;
 }
 
+#single-timer-view {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem 2rem 2rem;
+  background-color: rgb(248, 225, 241);
+  z-index: 999;
+}
+
+#single-timer-view.hidden {
+  display: none;
+}
+
+#single-timer-content {
+  width: min(90vw, 420px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2.5rem;
+}
+
+#single-timer-view #back-btn {
+  width: 52px;
+  height: 52px;
+  justify-content: center;
+  position: absolute;
+  top: 1.5rem;
+  left: 2rem;
+  background-color: rgb(255, 186, 224);
+  padding: 0;
+}
+
+#single-timer-view #back-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+#timer-form-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(248, 225, 241, 0.95);
+  backdrop-filter: blur(3px);
+  z-index: 1200;
+}
+
+#timer-form-container.hidden {
+  display: none;
+}
+
+#timer-form {
+  width: min(420px, 90vw);
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+#timer-form h2 {
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+  color: rgb(167, 75, 139);
+  font-size: 2rem;
+}
+
+#timer-form label {
+  font-weight: 600;
+  color: rgb(108, 77, 94);
+}
+
+#timer-form input {
+  border: 1px solid rgba(167, 75, 139, 0.35);
+  border-radius: 12px;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  background-color: rgb(253, 243, 248);
+  color: rgb(49, 46, 48);
+}
+
+#timer-form input:focus {
+  outline: 2px solid rgb(167, 75, 139);
+}
+
+.form-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-actions .icon-button {
+  width: 60px;
+  height: 60px;
+  justify-content: center;
+  background-color: rgb(255, 214, 239);
+}
+
+.form-actions .confirm {
+  background-color: rgb(167, 75, 139);
+}
+
+.form-actions .confirm img {
+  filter: brightness(0) invert(1);
+}
+
+.form-actions .danger {
+  background-color: rgb(255, 186, 224);
+}
+
+#single-timer-view h2 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+#single-timer-view p {
+  margin-top: 0.1rem;
+  font-size: 6rem;
+}
+
 .timer-card {
   display: flex;
   background-color: white;
@@ -54,6 +191,12 @@ button img {
   margin-top: 15px;
   width: 200px;
   height: 190px;
+}
+
+body.single-view-active .timer-card {
+  width: min(420px, 90vw);
+  height: auto;
+  min-height: 260px;
 }
 
 .timer-top-actions {
@@ -76,6 +219,18 @@ button img {
   font-size: 1.5rem; 
   text-align: center;
   color: rgb(49, 46, 48);
+}
+
+.timer-hero {
+  display: block;
+  width: 140px;
+  max-width: 75%;
+  margin: 0 auto 0.35rem;
+}
+
+body.single-view-active .timer-hero {
+  width: 220px;
+  max-width: 80%;
 }
     
 .timer-info p { 
@@ -100,7 +255,9 @@ button img {
 }
 
 .add-btn {
-  background-color:rgb(248, 225, 241);
+  background-color: rgb(255, 186, 224);
   width: 60px;
   height: 60px;
+  border-radius: 100px;
+  justify-content: center;
 }

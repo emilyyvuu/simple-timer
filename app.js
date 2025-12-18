@@ -5,6 +5,7 @@ const formContainer = document.getElementById('timer-form-container');
 const form = document.getElementById('timer-form');
 const backButton = document.getElementById('back-btn');
 const singleTimerContent = document.getElementById('single-timer-content');
+const cancelTimerButton = document.getElementById('cancel-timer-btn');
 
 let timers = [];
 const STORAGE_KEY = 'multi-timer-app';
@@ -30,9 +31,28 @@ function saveTimers() {
 
 timers = loadTimers();
 
+function openTimerForm() {
+    form.reset();
+    formContainer.classList.remove('hidden');
+    document.body.classList.add('form-open');
+}
+
+function closeTimerForm() {
+    formContainer.classList.add('hidden');
+    document.body.classList.remove('form-open');
+    form.reset();
+}
+
 /* Handles switching to form view to add a new timer */
 addTimerButton.addEventListener('click', () => {
-    formContainer.classList.remove('hidden');
+    openTimerForm();
+});
+
+cancelTimerButton.addEventListener('click', () => {
+    viewMode = "list";
+    selectedTimerId = null;
+    closeTimerForm();
+    render();
 });
 
 /* Handles form submission to add a new timer */
@@ -55,8 +75,7 @@ form.addEventListener('submit', (e) => {
 
     timers.push(newTimer);
     saveTimers();
-    form.reset();
-    formContainer.classList.add('hidden');
+    closeTimerForm();
     render();
 });
 
@@ -88,7 +107,7 @@ function formatTime(totalSeconds) {
 
 /* Creates a timer element */
 function createTimerElement(timer, options = {}) {
-    const { showZoom = false, onZoom, onDelete } = options;
+    const { showZoom = false, onZoom, onDelete, showHero = false } = options;
 
     const timerElement = document.createElement('div');
     timerElement.className = 'timer-card';
@@ -108,6 +127,16 @@ function createTimerElement(timer, options = {}) {
     remaining.textContent = formatTime(timer.remaining);
 
     info.appendChild(title);
+
+    if (showHero) {
+        const heroImg = document.createElement('img');
+        heroImg.src = 'icons/rocket-ship.gif';
+        heroImg.alt = '';
+        heroImg.setAttribute('aria-hidden', 'true');
+        heroImg.className = 'timer-hero';
+        info.appendChild(heroImg);
+    }
+
     info.appendChild(remaining);
 
     const bottomActions = document.createElement('div');
@@ -201,7 +230,10 @@ function createTimerElement(timer, options = {}) {
 
 /* Renders the appropriate view based on current mode */
 function render() {
-    if (viewMode === "list") {
+    const isListView = viewMode === "list";
+    document.body.classList.toggle('single-view-active', !isListView);
+
+    if (isListView) {
         timerList.classList.remove('hidden');
         singleTimer.classList.add('hidden');
 
@@ -230,6 +262,7 @@ function render() {
 
         const el = createTimerElement(timer, {
             showZoom: false,
+            showHero: true,
             onDelete: () => {
                 viewMode = "list";
                 selectedTimerId = null;
